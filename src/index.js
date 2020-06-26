@@ -1,12 +1,143 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+import './App.css';
+import 'rc-checkbox/assets/index.css';
+import Checkbox from 'rc-checkbox';
 
+
+class AppMain extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      todoList:[]
+    };
+
+    this.handleTodoListChange = this.handleTodoListChange.bind(this);
+  }
+
+  handleTodoListChange(todoList) {
+    this.setState({
+      todoList: todoList
+    });
+  }
+
+  render() {
+    return (
+      <div className="wrapper">
+        <div className="App-header">
+          <h1>
+            To Do List
+        <AddTaskForm
+          todoList={this.state.todoList}
+          changeTodoListState={this.handleTodoListChange}
+        />
+          </h1>
+        </div>
+        <ToDoList
+          todoList={this.state.todoList}
+          changeTodoListState={this.handleTodoListChange}
+        />
+      </div>
+    );
+  }
+}
+
+
+class AddTaskForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.addTask = this.addTask.bind(this);
+    this.input = React.createRef();
+  }
+
+  addTask(e) {
+    e.preventDefault();
+    if(this.input.current.value !== "") {
+      const newTask = {todo: this.input.current.value, completed: false};
+      this.props.todoList.push(newTask);
+      this.props.changeTodoListState(this.props.todoList);
+      this.input.current.value = "";
+    } else {
+      alert('Please enter a task and then press Add.');
+    }
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.addTask}>
+        <input 
+          type="text" 
+          placeholder="Enter task here..."
+          ref={this.input} />
+        {' '}
+        <button type="submit">
+          Add
+        </button>
+      </form>
+    );
+  }
+}
+
+class ToDoList extends React.Component {
+constructor(props) {
+  super(props);
+  this.completeTask.bind(this);
+  this.removeTask.bind(this);
+}
+
+completeTask(e, task) {
+  e.preventDefault();
+  task.completed ? task.completed  = false : task.completed = true;
+  this.props.changeTodoListState(this.props.todoList);
+}
+
+removeTask(e, todo, todoListArr) {
+  e.preventDefault();
+  const updatedList = todoListArr.filter((task) => {
+    if(task.todo !== todo) {
+      return task.todo;
+    }
+  });
+  this.props.changeTodoListState(updatedList);
+}
+
+  render() {
+    const todoListArr = this.props.todoList;
+    const list = todoListArr.map((task) => 
+        <li key={task.todo}>
+          <Checkbox 
+            checked={task.completed}
+            onChange={(e) => this.completeTask(e, task)}
+          />
+          {' '}
+          {task.todo}
+          {' '}
+          <button 
+          type="submit"
+          onClick={(e) => this.removeTask(e, task.todo, todoListArr)}
+          >
+            x
+          </button>
+        </li>
+    
+   );
+    return (
+      <ul className="Todo-list">
+        {list}
+      </ul>
+    );
+  }
+}
+
+
+
+
+//=====================================================
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AppMain />
   </React.StrictMode>,
   document.getElementById('root')
 );
@@ -14,4 +145,28 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.unregister()
+
+
+/*
+ class ToDoList extends React.Component {
+  render() {
+    const todoListArr = this.props.todoList;
+    const list = todoListArr.map((task) => 
+        <li key={task.todo}>
+          <Checkbox />
+          {' '}
+          {task.todo}
+          {' '}
+          <button type="submit">x</button>
+        </li>
+    
+   );
+    return (
+      <ul className="Todo-list">
+        {list}
+      </ul>
+    );
+  }
+}
+*/
