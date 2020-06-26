@@ -96,6 +96,8 @@ removeTask(e, todo, todoListArr) {
   const updatedList = todoListArr.filter((task) => {
     if(task.todo !== todo) {
       return task.todo;
+    } else {
+      return null;
     }
   });
   this.props.changeTodoListState(updatedList);
