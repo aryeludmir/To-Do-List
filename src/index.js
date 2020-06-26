@@ -25,21 +25,19 @@ class AppMain extends React.Component {
 
   render() {
     return (
-      <div className="wrapper">
+      <div className="App">
         <div className="App-header">
-          <h1>
-            To Do List
+          <h1>To Do List</h1>
         <AddTaskForm
           todoList={this.state.todoList}
           changeTodoListState={this.handleTodoListChange}
         />
-          </h1>
-        </div>
         <ToDoList
           todoList={this.state.todoList}
           changeTodoListState={this.handleTodoListChange}
         />
       </div>
+    </div>
     );
   }
 }
