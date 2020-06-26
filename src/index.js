@@ -146,27 +146,3 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister()
-
-
-/*
- class ToDoList extends React.Component {
-  render() {
-    const todoListArr = this.props.todoList;
-    const list = todoListArr.map((task) => 
-        <li key={task.todo}>
-          <Checkbox />
-          {' '}
-          {task.todo}
-          {' '}
-          <button type="submit">x</button>
-        </li>
-    
-   );
-    return (
-      <ul className="Todo-list">
-        {list}
-      </ul>
-    );
-  }
-}
-*/
